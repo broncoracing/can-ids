@@ -1,24 +1,50 @@
 #ifndef CAN_IDS_H
 #define CAN_IDS_H
 
-#define CAN_BAUD           250000 // CAN Baud rate in Hz
+#define CAN_BAUD            250000      // CAN Baud rate in Hz
 
-// Body Control Module
+// Steering wheel
+#define STEERING_WHEEL_ID   0x00        // Shifting and DRS
 
-// Electronic Throttle
+// https://pe-ltd.com/assets/AN400_CAN_Protocol_C.pdf
+// Originally on PE ECU some parts implemented on Link ECU for compatibility
+// TODO: Drop compatibility and migrate to G4X
+#define PE1_ID              0x0CFFF048  // 29 bit extended ID! RPM, TPS
+#define PE6_ID              0x0CFFF548  // 29 bit extended ID! Battery voltage, air temp, coolant temp
 
-// Lap Timer
-#define LAP_TIME_ID         0x70        // GPS lap timer status and latest laptime
-#define GPS_LAT_ID          0x71        // GPS latitude
-#define GPS_LONG_ID         0x72        // GPS longitude
+// Body control module
+#define BCM_STATUS_ID       0x14        // Neutral, ETCEnable, fan, and water pump statuses
 
-// Steering Wheel
-#define STEERING_WHEEL_ID   0x00        // Shifting, DRS, TCS, and aux functions
-// Telemetry
+// Electronic throttle system
+#define DBW_SENSORS_ID      0x20        // from Link Fury, APPS and TPS
+#define BRAKE_PRESSURE_ID   0x21        // from Link Fury, BSE
 
-// Thermocouple
+// Thermocouple module
 #define THERMOCOUPLE_1_ID   0x1E        // Channels 1-4
 #define THERMOCOUPLE_2_ID   0x1F        // Channel 5
 
+// Brake light
+#define BRAKE_LIGHT         0x30        // Brake light heartbeat pulse
+
+// Telemetry commands
+#define COOLING_CONTROL_ID  0x40        // Override cooling from telemetry/laptop (for accel runs)
+
+// Analog to CAN
+#define A2C_0_ID            0x50        // Analog to CAN modules (may or may not be installed)
+#define A2C_1_ID            0x51
+#define A2C_2_ID            0x52
+#define A2C_3_ID            0x53
+#define A2C_4_ID            0x54
+#define A2C_5_ID            0x55
+#define A2C_6_ID            0x56
+#define A2C_7_ID            0x57
+
+// Dyno
+#define DYNO_SERVO_ID       0x60        // Water valve control on dyno (for load control)
+
+// Lap timer
+#define LAP_TIME_ID         0x70        // GPS lap timer status and latest laptime
+#define GPS_LAT_ID          0x71        // GPS latitude
+#define GPS_LONG_ID         0x72        // GPS longitude
 
 #endif // CAN_IDS_H
