@@ -4,7 +4,7 @@
 #define CAN_BAUD              250000      // CAN Baud rate in Hz
 
 // Steering wheel
-#define STEERING_WHEEL_ID     0x00        // Shifting and DRS
+#define STEERING_WHEEL_ID     0x01        // Shifting and DRS
 
 // https://pe-ltd.com/assets/AN400_CAN_Protocol_C.pdf
 // Originally on PE ECU some parts implemented on Link ECU for compatibility
