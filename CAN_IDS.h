@@ -13,7 +13,7 @@
 // #define PE6_ID                0x0CFFF548  // 29 bit extended ID! Battery voltage, air temp, coolant temp
 
 // Engine Control Unit
-#define ECU1_ID               0x05        // RPM
+#define ECU1_ID               0x05        // RPM, lamba, lat accel, long accel
 #define ECU2_ID               0x06        // Oil Temp, Water Temp, IATs
 #define ECU3_ID               0x07        // Oil Pressure, Batt Voltage
 
