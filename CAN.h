@@ -1,14 +1,15 @@
-#ifndef CAN_FORMAT_H
-#define CAN_FORMAT_H
+#ifndef CAN_H
+#define CAN_H
 #include "main.h"
+#define CAN_BAUD              500000      // CAN Baud rate in Hz
 
-// CAN Frame definition macro.
+// CAN Frame declaration macro.
 // Ensures that the dlc & ID are valid, and defines constants for them
 #define FRAME(id, name, dlc) \
-   const uint16_t name ## _ID = id;\
-   const uint8_t name ## _DLC = dlc;\
-   static_assert(0 <= id && id < 0x800, "Invalid CAN ID");\
-   static_assert(0<= dlc && dlc <= 8, "Invalid DLC");
+   enum{ name ## _ID = id};\
+   enum{ name ## _DLC = dlc};\
+   _Static_assert(0 <= id && id < 0x800, "Invalid CAN ID");\
+   _Static_assert(0<= dlc && dlc <= 8, "Invalid DLC");
     
 
 // Indicates if a field is signed or unsigned
@@ -28,22 +29,13 @@ struct can_field_t {
     const enum field_signed_t is_signed;
 };
 
-// Macro to define CAN frame field.
+// Macro to declare CAN frame field.
 #define FIELD(frame, name, _start, _length, _multiplier, _divisor, _offset, _signed) \
-    static_assert(_start + _length <= frame ## _DLC * 8, "Field extends beyond end of frame data");\
-    const struct can_field_t frame ## _ ## field {\
-        .start = _start,\
-        .length = _length,\
-        .multiplier = _multiplier,\
-        .divisor = _divisor,\
-        .offset = _offset,\
-        .is_signed = _signed\
-    };
+    _Static_assert(_start + _length <= frame ## _DLC * 8, "Field extends beyond end of frame data");\
+    extern const struct can_field_t frame ## _ ## name;
 
-// Include CAN frame & field definitions
-#include "CAN_IDS.h"
-
-// Undefine the macros
+// Include CAN IDs and undefine macros
+#include "CAN_IDS.inc"
 #undef FRAME
 #undef FIELD
 
@@ -52,16 +44,7 @@ struct can_field_t {
 #define MASK_32(length) (0xFFFFFFFF >> (32 - length))
 
 #define GET_FIELD_FUNC(type, name, sign_extend) \
-    type read_field_ ## name(struct can_field_t* field, uint8_t* data) {    \
-        uint64_t data_u64 = *((uint64_t *) data);                           \
-        type output = data_u64 >> field -> start;                           \
-        output &= MASK_8(field -> length);                                  \
-        if(sign_extend) {                                                   \
-            type sign_bit = 1 << (field -> length - 1);                     \
-            output = (output ^ sign_bit) - sign_bit;                        \
-        }                                                                   \
-        return output;                                                      \
-    }                                                                       \
+    type read_field_ ## name(struct can_field_t* field, uint8_t* data);
 
 GET_FIELD_FUNC(uint8_t,  u8,  0);
 GET_FIELD_FUNC(uint16_t, u16, 0);
@@ -71,32 +54,13 @@ GET_FIELD_FUNC(int8_t,  i8,  1);
 GET_FIELD_FUNC(int16_t, i16, 1);
 GET_FIELD_FUNC(int32_t, i32, 1);
 
-uint32_t read_field_scaled_unsigned(struct can_field_t* field, uint8_t* data) {
-    if(field -> is_signed == SIGNED) {
-        return (uint32_t)(read_field_i32(field, data) * field->multiplier / field->divisor + field->offset);
-    } else {
-        return (uint32_t)(read_field_u32(field, data) * field->multiplier / field->divisor + field->offset);
-    }
-}
+#undef GET_FIELD_FUNC
 
-int32_t read_field_scaled_signed(struct can_field_t* field, uint8_t* data) {
-    if(field -> is_signed == SIGNED) {
-        return (int32_t)(read_field_i32(field, data) * field->multiplier / field->divisor + field->offset);
-    } else {
-        return (int32_t)(read_field_u32(field, data) * field->multiplier / field->divisor + field->offset);
-    }
-}
+uint32_t read_field_scaled_unsigned(struct can_field_t* field, uint8_t* data);
 
-float read_field_scaled_float(struct can_field_t* field, uint8_t* data) {
-    float raw_val;
-    if(field -> is_signed == SIGNED) {
-        raw_val = (float)read_field_i32(field, data);
-    } else {
-        raw_val = (float)read_field_u32(field, data);
-    }
+int32_t read_field_scaled_signed(struct can_field_t* field, uint8_t* data);
 
-    return raw_val * ((float) field -> multiplier) / ((float) field -> divisor) + ((float) field -> offset);
-}
+float read_field_scaled_float(struct can_field_t* field, uint8_t* data);
 
 
 #endif

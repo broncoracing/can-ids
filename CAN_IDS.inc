@@ -1,4 +1,3 @@
-#define CAN_BAUD              500000      // CAN Baud rate in Hz
 
 // Inverter frames
 // inverter temperatures
@@ -291,3 +290,4 @@ FIELD(ECU_DBW, brake_pressure_rear, 32, 16, 1, 10, 0, UNSIGNED);
 // Bootloader IDs
 FRAME(0x700, BOOTLOADER, 8);
 FRAME(0x701, BOOTLOADER_RESPONSE, 8);
+
