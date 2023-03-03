@@ -176,7 +176,7 @@ FIELD(BCM_STATUS1, mcu_temperature, 32, 16, 1, 10, 0, SIGNED);
 // Steering wheel frames
 FRAME(0xE0, DASHBOARD_0, 2);
 FIELD(DASHBOARD_0, dial_0,  0, 8, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_0, dial_0,  8, 8, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_0, dial_1,  8, 8, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_0, an1,  0, 16, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_0, an2, 16, 16, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_0, an3, 32, 16, 1, 1, 0, UNSIGNED);
