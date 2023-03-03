@@ -2,9 +2,17 @@
 
 #define GET_FIELD_FUNC(type, name, sign_extend) \
     type read_field_ ## name(struct can_field_t* field, uint8_t* data) {    \
-        uint64_t data_u64 = *((uint64_t *) data);                           \
-        type output = data_u64 >> field -> start;                           \
-        output &= MASK_8(field -> length);                                  \
+        uint32_t output = 0;                                                \
+        uint8_t start_byte = field->start / 8;                              \
+        uint8_t start_bit = field->start % 8;                               \
+        uint8_t end = field->start + field->length - 1;                     \
+        uint8_t end_byte = end / 8;                                         \
+        uint8_t end_bit = 7 - (end % 8);                                    \
+        for(uint8_t byte = end_byte; byte > start_byte; --byte){ /* Add all bytes after 1st byte */ \
+            uint8_t byte_num = end_byte - byte;                             \
+            output |= (data[byte] << byte_num) >> end_bit;                  \
+        }                                                                   \
+        output |= ((data[start_byte] & (0xFF >> start_bit)) << ((end_byte - start_byte) * 8)) >> end_bit;   /* Add start byte (masked) */ \
         if(sign_extend) {                                                   \
             type sign_bit = 1 << (field -> length - 1);                     \
             output = (output ^ sign_bit) - sign_bit;                        \
