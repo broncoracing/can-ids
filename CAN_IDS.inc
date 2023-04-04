@@ -173,17 +173,22 @@ FIELD(BCM_STATUS1, upshift_current, 0, 16, 1, 100, 0, UNSIGNED);
 FIELD(BCM_STATUS1, downshift_current, 16, 16, 1, 100, 0, UNSIGNED);
 FIELD(BCM_STATUS1, mcu_temperature, 32, 16, 1, 10, 0, SIGNED);
 
-// Steering wheel frames
-FRAME(0xE0, DASHBOARD_0, 2);
+// Steering wheel/dashboard frames
+FRAME(0xE0, DASHBOARD_0, 4);
 FIELD(DASHBOARD_0, dial_0,  0, 8, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_0, dial_1,  8, 8, 1, 1, 0, UNSIGNED);
-// FIELD(DASHBOARD_0, an1,  0, 16, 1, 1, 0, UNSIGNED);
-// FIELD(DASHBOARD_0, an2, 16, 16, 1, 1, 0, UNSIGNED);
-// FIELD(DASHBOARD_0, an3, 32, 16, 1, 1, 0, UNSIGNED);
-// FIELD(DASHBOARD_0, an4, 48, 16, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_0, mcu_temperature, 16, 16, 1, 10, 0, SIGNED);
 
-FRAME(0xE1, DASHBOARD_1, 8);
 
+FRAME(0xE1, DASHBOARD_1, 1);
+FIELD(DASHBOARD_1, upshift,     0, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, downshift,   1, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, launch_ctrl, 2, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn3,        2, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn4,        2, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn5,        2, 1, 1, 1, 0, UNSIGNED);
+
+// --- Dashboard CAN field graveyard ---
 // FIELD(DASHBOARD_1, an4,  0, 16, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_1, an5, 16, 16, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_1, btn0, 32, 1, 1, 1, 0, UNSIGNED);
