@@ -294,6 +294,14 @@ FIELD(ECU_DBW, brake_pressure_front, 16, 16, 1, 10, 0, UNSIGNED);
 FIELD(ECU_DBW, brake_pressure_rear, 32, 16, 1, 10, 0, UNSIGNED);
 
 
+// Dyno controller CAN frames. Only present when dashboard is connected to dyno.
+FRAME(0x40F, DYNO_CONTROLLER, 8);
+FIELD(DYNO_CONTROLLER, dyno_rpm, 0, 16, 1, 1, 0, UNSIGNED);
+FIELD(DYNO_CONTROLLER, dyno_target, 16, 16, 1, 1, 0, UNSIGNED);
+FIELD(DYNO_CONTROLLER, dyno_load, 32, 16, 1, 1, 0, UNSIGNED);
+FIELD(DYNO_CONTROLLER, dyno_valve_pos, 48, 16, 1, 1, 0, UNSIGNED);
+
+
 // Bootloader IDs
 FRAME(0x700, BOOTLOADER, 8);
 FRAME(0x701, BOOTLOADER_RESPONSE, 8);
