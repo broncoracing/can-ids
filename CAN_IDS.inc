@@ -160,12 +160,13 @@ FIELD(INVERTER_COMMAND, torque_limit_override, 48, 16, 1, 10, 0, SIGNED); // if 
 
 
 //BCM Command Frames
-FRAME(0xD0, BCM_COMMAND, 3); // ECU command to BCM
+FRAME(0xD0, BCM_COMMAND, 4); // ECU command to BCM
 FIELD(BCM_COMMAND, water_pump_duty, 0, 8, 1, 255, 0, UNSIGNED); // 0=off, 255=full
 FIELD(BCM_COMMAND, radiator_fan_duty, 8, 8, 1, 255, 0, UNSIGNED);
-FIELD(BCM_COMMAND, upshift, 16, 1, 1, 1, 0, UNSIGNED);
-FIELD(BCM_COMMAND, downshift, 17, 1, 1, 1, 0, UNSIGNED);
-FIELD(BCM_COMMAND, brake_light, 18, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND, extra_fan_duty, 16, 8, 1, 255, 0, UNSIGNED);
+FIELD(BCM_COMMAND, upshift, 24, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND, downshift, 25, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND, brake_light, 26, 1, 1, 1, 0, UNSIGNED);
 
 // BCM Status frame(s)
 FRAME(0x100, BCM_STATUS1, 8);
