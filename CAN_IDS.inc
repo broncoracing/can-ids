@@ -278,7 +278,7 @@ FIELD(ECU_2, map, 48, 16, 1, 10, 0, SIGNED);
 FRAME(0x402, ECU_3, 8);
 FIELD(ECU_3, oil_pressure, 0, 16, 1, 10, 0, SIGNED);
 FIELD(ECU_3, battery_voltage, 16, 16, 1, 1000, 0, SIGNED);
-FIELD(ECU_3, gear_sensor_voltage, 32, 16, 1, 100, 0, UNSIGNED);
+FIELD(ECU_3, fuel_pressure, 32, 16, 1, 1, 0, UNSIGNED);
 FIELD(ECU_3, gear_position, 48, 8, 1, 1, 0, UNSIGNED);
 FIELD(ECU_3, speedometer, 56, 8, 1, 1, 0, UNSIGNED);
 
