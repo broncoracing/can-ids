@@ -185,9 +185,9 @@ FRAME(0xE1, DASHBOARD_1, 1);
 FIELD(DASHBOARD_1, upshift,     0, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, downshift,   1, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, launch_ctrl, 2, 1, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_1, btn3,        2, 1, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_1, btn4,        2, 1, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_1, btn5,        2, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn3,        3, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn4,        4, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn5,        5, 1, 1, 1, 0, UNSIGNED);
 
 // --- Dashboard CAN field graveyard ---
 // FIELD(DASHBOARD_1, an4,  0, 16, 1, 1, 0, UNSIGNED);
