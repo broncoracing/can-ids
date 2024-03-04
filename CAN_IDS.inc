@@ -185,9 +185,10 @@ FRAME(0xE1, DASHBOARD_1, 1);
 FIELD(DASHBOARD_1, upshift,     0, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, downshift,   1, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, launch_ctrl, 2, 1, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_1, btn3,        3, 1, 1, 1, 0, UNSIGNED);
-FIELD(DASHBOARD_1, btn4,        4, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, btn3,        3, 1, 1, 1, 0, UNSIGNED); // TODO Rename to log_marker
+FIELD(DASHBOARD_1, btn4,        4, 1, 1, 1, 0, UNSIGNED); 
 FIELD(DASHBOARD_1, btn5,        5, 1, 1, 1, 0, UNSIGNED);
+FIELD(DASHBOARD_1, clear_faults, 6, 1, 1, 1, 0, UNSIGNED);
 
 FRAME(0x200, CELL_TAP_1_1, 8);
 FIELD(CELL_TAP_1_1, s1_temp, 0, 16, 1, 10, 0, SIGNED);
@@ -341,6 +342,10 @@ FIELD(ECU_DBW, tps, 8, 8, 1, 100, 0, UNSIGNED);
 FIELD(ECU_DBW, brake_pressure_front, 16, 16, 1, 10, 0, UNSIGNED);
 FIELD(ECU_DBW, brake_pressure_rear, 32, 16, 1, 10, 0, UNSIGNED);
 
+FRAME(0x405, ECU_DIAG, 4);
+FIELD(ECU_DIAG, dyno_rpm, 0, 16, 1, 1, 0, UNSIGNED);
+FIELD(ECU_DIAG, ecu_fault_code, 16, 8, 1, 1, 0, UNSIGNED);
+FIELD(ECU_DIAG, ecu_check_engine, 24, 1, 1, 1, 0, UNSIGNED);
 
 // Dyno controller CAN frames. Only present when dashboard is connected to dyno.
 FRAME(0x40F, DYNO_CONTROLLER, 8);
