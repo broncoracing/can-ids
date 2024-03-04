@@ -189,6 +189,53 @@ FIELD(DASHBOARD_1, btn3,        3, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, btn4,        4, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, btn5,        5, 1, 1, 1, 0, UNSIGNED);
 
+FRAME(0x200, CELL_TAP_1_1, 8);
+FIELD(CELL_TAP_1_1, s1_temp, 0, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_1, s2_temp, 16, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_1, s3_temp, 32, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_1, s4_temp, 48, 16, 1, 10, 0, SIGNED);
+FRAME(0x201, CELL_TAP_1_2, 8);
+FIELD(CELL_TAP_1_2, s5_temp, 0, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_2, s6_temp, 16, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_2, s7_temp, 32, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_2, s8_temp, 48, 16, 1, 10, 0, SIGNED);
+FRAME(0x202, CELL_TAP_1_3, 8);
+FIELD(CELL_TAP_1_3, s9_temp, 0, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_3, s10_temp, 16, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_3, s11_temp, 32, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_3, s12_temp, 48, 16, 1, 10, 0, SIGNED);
+FRAME(0x203, CELL_TAP_1_4, 8);
+FIELD(CELL_TAP_1_4, positive_bb_temp, 0, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_4, negative_bb_temp, 16, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_4, mcu_temp, 32, 16, 1, 10, 0, SIGNED);
+FIELD(CELL_TAP_1_4, max_cell_temp, 48, 16, 1, 10, 0, SIGNED);
+
+// other fields omitted
+FRAME(0x204, CELL_TAP_2_1, 8);
+FRAME(0x20C, CELL_TAP_3_1, 8);
+FRAME(0x210, CELL_TAP_4_1, 8);
+FRAME(0x214, CELL_TAP_5_1, 8);
+FRAME(0x218, CELL_TAP_6_1, 8);
+FRAME(0x21C, CELL_TAP_7_1, 8);
+
+// Thermistor calibration
+FRAME(0x2EF, CELL_TAP_CAL_CMD, 5);
+FIELD(CELL_TAP_CAL_CMD, cmd, 0, 8, 1, 1, 0, UNSIGNED); // Command for calibrating thermistors.
+// 0: clear calibration data
+// 1-3: first, second, and third calibration temperatures
+// 4: compute calibrations
+
+FIELD(CELL_TAP_CAL_CMD, value, 8, 32, 1, 1, 0, UNSIGNED); // 32 bit floating point value for calibration temperatures
+
+FRAME(0x2F0, CELL_TAP_CAL_RESP, 1); // response from calibration command.
+FIELD(CELL_TAP_CAL_RESP, errno, 0, 8, 1, 1, 0, UNSIGNED); // 0 for success
+// 1 = flash write failed
+// 2 = invalid command
+// 3 = sensor out of range error
+// 4 = missing temperature calibration
+// 5 = temperature calibration computation failed
+
+
 // --- Dashboard CAN field graveyard ---
 // FIELD(DASHBOARD_1, an4,  0, 16, 1, 1, 0, UNSIGNED);
 // FIELD(DASHBOARD_1, an5, 16, 16, 1, 1, 0, UNSIGNED);
