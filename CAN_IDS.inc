@@ -168,6 +168,25 @@ FIELD(BCM_COMMAND, upshift, 24, 1, 1, 1, 0, UNSIGNED);
 FIELD(BCM_COMMAND, downshift, 25, 1, 1, 1, 0, UNSIGNED);
 FIELD(BCM_COMMAND, brake_light, 26, 1, 1, 1, 0, UNSIGNED);
 
+//BCM Command Frames
+FRAME(0xD1, BCM_COMMAND_EV, 7); // ECU command to BCM
+// low-side drivers
+FIELD(BCM_COMMAND_EV, L0_AccumPump, 0, 8, 1, 255, 0, UNSIGNED); // 0=off, 255=full
+FIELD(BCM_COMMAND_EV, L1_MotorPump, 8, 8, 1, 255, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, L2_AccumFan, 16, 8, 1, 255, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, L3_MotorFan, 24, 8, 1, 255, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, L4_BrakeLight, 32, 8, 1, 255, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, L5_Sound, 40, 8, 1, 255, 0, UNSIGNED);
+// high-side drivers
+FIELD(BCM_COMMAND_EV, H0_ShutdownPower, 48, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, H1_DashboardPower, 49, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, H2_BSPDPower, 50, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, H3_AccumulatorPower, 51, 1, 1, 1, 0, UNSIGNED);
+FIELD(BCM_COMMAND_EV, H4_VCUPower, 52, 1, 1, 1, 0, UNSIGNED); // default on
+FIELD(BCM_COMMAND_EV, H5_InverterPower, 53, 1, 1, 1, 0, UNSIGNED);
+
+
+
 // BCM Status frame(s)
 FRAME(0x100, BCM_STATUS1, 8);
 FIELD(BCM_STATUS1, upshift_current, 0, 16, 1, 100, 0, UNSIGNED);
