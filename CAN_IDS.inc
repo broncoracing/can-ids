@@ -187,12 +187,6 @@ FIELD(BCM_COMMAND_EV, H5_InverterPower, 53, 1, 1, 1, 0, UNSIGNED);
 
 
 
-// BCM Status frame(s)
-FRAME(0x100, BCM_STATUS1, 8);
-FIELD(BCM_STATUS1, upshift_current, 0, 16, 1, 100, 0, UNSIGNED);
-FIELD(BCM_STATUS1, downshift_current, 16, 16, 1, 100, 0, UNSIGNED);
-FIELD(BCM_STATUS1, mcu_temperature, 32, 16, 1, 10, 0, SIGNED);
-
 // Steering wheel/dashboard frames
 FRAME(0xE0, DASHBOARD_0, 4);
 FIELD(DASHBOARD_0, dial_0,  0, 8, 1, 1, 0, UNSIGNED);
@@ -208,6 +202,62 @@ FIELD(DASHBOARD_1, btn3,        3, 1, 1, 1, 0, UNSIGNED); // TODO Rename to log_
 FIELD(DASHBOARD_1, btn4,        4, 1, 1, 1, 0, UNSIGNED); 
 FIELD(DASHBOARD_1, btn5,        5, 1, 1, 1, 0, UNSIGNED);
 FIELD(DASHBOARD_1, clear_faults, 6, 1, 1, 1, 0, UNSIGNED);
+
+
+// VCU Status frame(s)
+FRAME(0xF0, VCU_STATUS, 8);
+FIELD(VCU_STATUS, vehicle_state, 0, 8, 1, 1, 0, UNSIGNED);
+    // VSM_GLV_ON = 0, // GLV System on, TSMS/shutdown circuit off
+    // VSM_PRECHARGE = 1, // TSMS flipped, precharging (timer-based - we wait 5sec for precharge to finish, and shut off if it doesn't)
+    // VSM_TS_ON = 2, // TS System active, but not ready to drive yet
+    // VSM_INVERTER_ACTIVATING = 3, // ready to drive sound plays, then inverter activates after 3 sec
+    // VSM_READY_TO_DRIVE = 4, // DBW system running, vehicle driving normally
+    // VSM_ERROR_STATE = 5,
+FIELD(VCU_STATUS, ts_voltage, 8, 16, 1, 10, 0, UNSIGNED); // dc bus voltage
+FIELD(VCU_STATUS, ts_power, 24, 16, 10, 1, 0, SIGNED); // power output (+ = discharging, - = charging)
+FIELD(VCU_STATUS, motor_speed, 40, 16, 1, 1, 0, SIGNED); // vehicle speed (mph? m/s?)
+FIELD(VCU_STATUS, bspd_fault_status, 56, 1, 1, 1, 0, UNSIGNED); // BSPD Fault, 0=no fault 1=fault
+FIELD(VCU_STATUS, ams_fault_status, 57, 1, 1, 1, 0, UNSIGNED); // AMS fault, 0=no fault 1=fault
+FIELD(VCU_STATUS, imd_fault_status, 58, 1, 1, 1, 0, UNSIGNED); // IMD fault, 0=no fault 1=fault
+FIELD(VCU_STATUS, fault_latch_status, 58, 1, 1, 1, 0, UNSIGNED); // fault latched by fault latch board, 0=no fault 1=fault
+FIELD(VCU_STATUS, shutdown_status, 59, 1, 1, 1, 0, UNSIGNED); // shutdown circuit status, 0=off 1=on
+FIELD(VCU_STATUS, dbw_fault_status, 60, 1, 1, 1, 0, UNSIGNED); // VCU DBW system fault, 0=no fault 1=fault
+
+FRAME(0xF1, VCU_DIAG_0, 8);
+// duty cycles of APP sensors. 0=0%, 65536=100%.
+FIELD(VCU_DIAG_0, apps1_duty, 0, 16, 1, 65536, 0, UNSIGNED);
+FIELD(VCU_DIAG_0, apps2_duty, 16, 16, 1, 65536, 0, UNSIGNED);
+// decoded percentages of pedal positions x100.
+// 0=0%, 10000=100%
+// (signed value, can exceed 0-100% range)
+FIELD(VCU_DIAG_0, apps1_pct, 32, 16, 1, 10000, 0, SIGNED);
+FIELD(VCU_DIAG_0, apps2_pct, 48, 16, 1, 10000, 0, SIGNED);
+
+FRAME(0xF2, VCU_DIAG_1, 8);
+// raw ADC reading for BSEs
+FIELD(VCU_DIAG_1, bse1_adc, 0, 16, 1, 1, 0, UNSIGNED);
+FIELD(VCU_DIAG_1, bse2_adc, 16, 16, 1, 1, 0, UNSIGNED);
+// decoded percentages of brake pressure.
+// 0=0%, 10000=100%
+// (signed value, can exceed 0-100% range)
+FIELD(VCU_DIAG_1, bse1_pct, 32, 16, 1, 10000, 0, SIGNED);
+FIELD(VCU_DIAG_1, bse2_pct, 48, 16, 1, 10000, 0, SIGNED);
+
+FRAME(0xFF, VCU_CALIB_CMD, 1);
+// which parameter to set
+// 0 = apps low duties
+// 1 = apps high duties
+// 2 = bse low adc
+// 3 = bse high adc
+FIELD(VCU_CALIB_CMD, param_no, 0, 8, 1, 1, 0, UNSIGNED); 
+
+
+// BCM Status frame(s)
+FRAME(0x100, BCM_STATUS1, 8);
+FIELD(BCM_STATUS1, upshift_current, 0, 16, 1, 100, 0, UNSIGNED);
+FIELD(BCM_STATUS1, downshift_current, 16, 16, 1, 100, 0, UNSIGNED);
+FIELD(BCM_STATUS1, mcu_temperature, 32, 16, 1, 10, 0, SIGNED);
+
 
 FRAME(0x200, CELL_TAP_1_1, 8);
 FIELD(CELL_TAP_1_1, s1_temp, 0, 16, 1, 10, 0, SIGNED);
@@ -373,6 +423,17 @@ FIELD(DYNO_CONTROLLER, dyno_target, 16, 16, 1, 1, 0, UNSIGNED);
 FIELD(DYNO_CONTROLLER, dyno_load, 32, 16, 1, 1, 0, UNSIGNED);
 FIELD(DYNO_CONTROLLER, dyno_valve_pos, 48, 16, 1, 1, 0, UNSIGNED);
 
+
+// BMS Can frames
+FRAME(0x6B0, BMS_STATUS, 8);
+FIELD(BMS_STATUS, pack_current, 0, 16, 1, 10, 0, SIGNED);
+FIELD(BMS_STATUS, pack_voltage, 16, 16, 1, 100, 0, UNSIGNED);
+FIELD(BMS_STATUS, pack_soc, 32, 8, 1, 1, 0, UNSIGNED);
+
+FRAME(0x6B1, BCM_LIMITS_TEMPS, 8);
+FIELD(BCM_LIMITS_TEMPS, current_limit, 0, 16, 1, 1, 0, UNSIGNED);
+FIELD(BCM_LIMITS_TEMPS, high_temp, 32, 8, 1, 1, 0, SIGNED);
+FIELD(BCM_LIMITS_TEMPS, low_temp, 40, 8, 1, 1, 0, SIGNED);
 
 // Bootloader IDs
 FRAME(0x700, BOOTLOADER, 8);
