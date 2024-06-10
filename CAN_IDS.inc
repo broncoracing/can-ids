@@ -219,9 +219,9 @@ FIELD(VCU_STATUS, motor_speed, 40, 16, 1, 1, 0, SIGNED); // vehicle speed (mph? 
 FIELD(VCU_STATUS, bspd_fault_status, 56, 1, 1, 1, 0, UNSIGNED); // BSPD Fault, 0=no fault 1=fault
 FIELD(VCU_STATUS, ams_fault_status, 57, 1, 1, 1, 0, UNSIGNED); // AMS fault, 0=no fault 1=fault
 FIELD(VCU_STATUS, imd_fault_status, 58, 1, 1, 1, 0, UNSIGNED); // IMD fault, 0=no fault 1=fault
-FIELD(VCU_STATUS, fault_latch_status, 58, 1, 1, 1, 0, UNSIGNED); // fault latched by fault latch board, 0=no fault 1=fault
-FIELD(VCU_STATUS, shutdown_status, 59, 1, 1, 1, 0, UNSIGNED); // shutdown circuit status, 0=off 1=on
-FIELD(VCU_STATUS, dbw_fault_status, 60, 1, 1, 1, 0, UNSIGNED); // VCU DBW system fault, 0=no fault 1=fault
+FIELD(VCU_STATUS, fault_latch_status, 59, 1, 1, 1, 0, UNSIGNED); // fault latched by fault latch board, 0=no fault 1=fault
+FIELD(VCU_STATUS, shutdown_status, 60, 1, 1, 1, 0, UNSIGNED); // shutdown circuit status, 0=off 1=on
+FIELD(VCU_STATUS, dbw_fault_status, 61, 1, 1, 1, 0, UNSIGNED); // VCU DBW system fault, 0=no fault 1=fault
 
 FRAME(0xF1, VCU_DIAG_0, 8);
 // duty cycles of APP sensors. 0=0%, 65536=100%.
@@ -428,12 +428,15 @@ FIELD(DYNO_CONTROLLER, dyno_valve_pos, 48, 16, 1, 1, 0, UNSIGNED);
 FRAME(0x6B0, BMS_STATUS, 8);
 FIELD(BMS_STATUS, pack_current, 0, 16, 1, 10, 0, SIGNED);
 FIELD(BMS_STATUS, pack_voltage, 16, 16, 1, 100, 0, UNSIGNED);
-FIELD(BMS_STATUS, pack_soc, 32, 8, 1, 1, 0, UNSIGNED);
+FIELD(BMS_STATUS, pack_soc, 32, 8, 1, 1, 0, UNSIGNED); // 0-255
 
-FRAME(0x6B1, BCM_LIMITS_TEMPS, 8);
-FIELD(BCM_LIMITS_TEMPS, current_limit, 0, 16, 1, 1, 0, UNSIGNED);
-FIELD(BCM_LIMITS_TEMPS, high_temp, 32, 8, 1, 1, 0, SIGNED);
-FIELD(BCM_LIMITS_TEMPS, low_temp, 40, 8, 1, 1, 0, SIGNED);
+FRAME(0x6B1, BMS_LIMITS_TEMPS, 8);
+FIELD(BMS_LIMITS_TEMPS, current_limit, 0, 16, 1, 1, 0, UNSIGNED);
+FIELD(BMS_LIMITS_TEMPS, high_temp, 32, 8, 1, 1, 0, SIGNED);
+FIELD(BMS_LIMITS_TEMPS, low_temp, 40, 8, 1, 1, 0, SIGNED);
+
+FRAME(0x6B2, BMS_GLV_VOLTAGE, 2);
+FIELD(BMS_GLV_VOLTAGE, glv_voltage, 0, 16, 1, 1, 0, UNSIGNED);
 
 // Bootloader IDs
 FRAME(0x700, BOOTLOADER, 8);
